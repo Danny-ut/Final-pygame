@@ -18,11 +18,6 @@ def verificar_respuesta(opcion, estado):
     - Reproduce el sonido de error.
     - Retrocede en el tablero (posiblemente más si cae en una serpiente).
     
-    Además:
-    - Elimina la pregunta actual del banco restante.
-    - Finaliza el juego si no quedan preguntas o si se llega al final del tablero.
-    - Si el juego continúa, selecciona una nueva pregunta aleatoria.
-    
     Parámetros:
     - opcion: índice (int) de la opción seleccionada por el jugador (-1 si no respondió a tiempo).
     - estado: diccionario con toda la información del juego (posición, puntaje, pregunta actual, etc.).
@@ -59,26 +54,21 @@ def verificar_respuesta(opcion, estado):
     estado["tiempo_mensaje"] = pygame.time.get_ticks()
     estado["esperando_confirmacion"] = True
 
-    # 🔹 Eliminar la pregunta actual del banco restante (si aún está)
     if "preguntas_restantes" in estado and estado["pregunta_actual"] in estado["preguntas_restantes"]:
         estado["preguntas_restantes"].remove(estado["pregunta_actual"])
 
-    # 🔹 Si no quedan preguntas, terminar el juego con mensaje especial
     if not estado.get("preguntas_restantes"):
         estado["estado"] = FIN_JUEGO
         estado["mensaje"] = "Fin del juego, se acabaron las preguntas"
         estado = guardar_puntaje(estado)
         return estado
 
-    # 🔹 Si llegó a la última casilla, terminar normalmente
     if nueva_pos == 1 or nueva_pos >= CASILLEROS_TOTALES:
         estado["estado"] = FIN_JUEGO
-        # ✅ No sobrescribimos el mensaje si ya decía "se acabaron las preguntas"
         if "se acabaron las preguntas" not in estado["mensaje"].lower():
             estado["mensaje"] = "Fin del juego"
         estado = guardar_puntaje(estado)
     else:
-        # 🔹 Elegir una nueva pregunta aleatoria de las que quedan
         estado["pregunta_actual"] = random.choice(estado["preguntas_restantes"])
 
     return estado

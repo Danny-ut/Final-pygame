@@ -11,8 +11,8 @@ def obtener_color_casillero(num):
     
     Retorna:
     - Una tupla (color, valor) donde:
-      - color es el color del casillero según su tipo (normal, especial, inicio o fin).
-      - valor es el número de avance o retroceso si es un casillero especial.
+    - color es el color del casillero según su tipo (normal, especial, inicio o fin).
+    - valor es el número de avance o retroceso si es un casillero especial.
     '''
     if num == 1:
         return ROJO, 0

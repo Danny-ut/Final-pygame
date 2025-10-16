@@ -26,9 +26,9 @@ def manejar_eventos_menu(evento, estado):
         if ANCHO // 2 - 100 <= x <= ANCHO // 2 + 100:
             if 300 <= y <= 350 and estado["jugador"].strip():
                 estado["estado"] = JUGANDO
-                # 🔹 Inicializa todas las preguntas al iniciar partida
+                
                 estado["preguntas_restantes"] = obtener_todas_las_preguntas().copy()
-                # 🔹 Elige la primera pregunta de esa lista
+                
                 estado["pregunta_actual"] = random.choice(estado["preguntas_restantes"])
                 estado["ultimo_tiempo"] = pygame.time.get_ticks()
             elif 370 <= y <= 420:
@@ -54,14 +54,14 @@ def manejar_eventos_jugando(evento, estado):
     if estado["esperando_confirmacion"]:
         if evento.type == pygame.MOUSEBUTTONDOWN:
             x, y = evento.pos
-            # Botón "Sí" → continuar jugando
+            
             if ANCHO // 2 - 150 <= x <= ANCHO // 2 - 30 and ALTO // 2 <= y <= ALTO // 2 + 40:
                 estado["esperando_confirmacion"] = False
                 if estado["posicion"] == 1 or estado["posicion"] >= CASILLEROS_TOTALES:
                     estado["estado"] = FIN_JUEGO
                     estado = guardar_puntaje(estado)
                 else:
-                    # ✅ Elige una nueva pregunta solo de las que quedan
+                    
                     if estado["preguntas_restantes"]:
                         estado["pregunta_actual"] = random.choice(estado["preguntas_restantes"])
                         estado["tiempo_restante"] = TIEMPO_PREGUNTA
@@ -70,7 +70,7 @@ def manejar_eventos_jugando(evento, estado):
                         estado["estado"] = FIN_JUEGO
                         estado["mensaje"] = "Fin del juego, se acabaron las preguntas"
                         estado = guardar_puntaje(estado)
-            # Botón "No" → finalizar juego
+
             elif ANCHO // 2 + 30 <= x <= ANCHO // 2 + 150 and ALTO // 2 <= y <= ALTO // 2 + 40:
                 estado["esperando_confirmacion"] = False
                 estado["estado"] = FIN_JUEGO
@@ -109,9 +109,6 @@ def actualizar_tiempo(estado):
 def resetear_juego():
     '''
     Reinicia las variables principales del juego: puntaje, posición y tiempo restante.
-    
-    Parámetros:
-    - Ninguno.
     
     Retorna:
     - Un diccionario con los valores iniciales del juego.
